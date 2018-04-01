@@ -14,7 +14,6 @@ namespace dgl
 			pos{ position }, scene_obj{ std::move(obj) } {}
 		
 		glm::vec3 pos = glm::vec3{ 0 };
-		glm::vec3 view = glm::vec3{ 0 };
 		
 		SceneObj scene_obj = {};
 	};
@@ -27,8 +26,9 @@ namespace dgl
 	inline glm::mat2 texture_transform(const Actor& a)
 	{
 		// flip X according to view direction
-		float half_space_test = glm::dot(glm::vec3{ 1.0f, 0.0f, 0.0f }, a.view);
-		float scale = glm::sign(half_space_test);
-		return a.scene_obj.tex_transform * glm::mat2{ scale, 0.0f, 0.0f, 1.0f };
+		//float half_space_test = glm::dot(glm::vec3{ 1.0f, 0.0f, 0.0f }, a.view);
+		//float scale = glm::sign(half_space_test);
+		//return a.scene_obj.tex_transform * glm::mat2{ scale, 0.0f, 0.0f, 1.0f };
+		return {};
 	}
 }
