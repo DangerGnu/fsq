@@ -23,14 +23,15 @@ namespace dgl
 		// unbind the vao
 		glBindVertexArray(0);
 	}
-
-	inline void draw(const Actor& a, const glm::mat4& vp)
+	// setting the uniforms of the shader should not be the responsibility of the draw function.
+	inline void draw(const Actor& a, const glm::mat4& v, const glm::mat4& p)
 	{
-		auto mvp = vp * model_matrix(a);
 		auto tex_mat = texture_transform(a);
 		a.scene_obj.tex.bind(GL_TEXTURE0);
 		auto& shader = a.scene_obj.batch.shader();
-		shader.uniform("mvp", mvp);
+		shader.uniform("m", model_matrix(a));
+		shader.uniform("v", v);
+		shader.uniform("p", p);
 		shader.uniform("tex_transform", tex_mat);
 		draw(a.scene_obj.batch);
 	}

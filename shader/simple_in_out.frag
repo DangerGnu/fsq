@@ -13,5 +13,6 @@ out vec4 color;
 
 void main()
 {
-    color = out_color; //texture(tex, tex_transform * out_uv).abgr + out_color;
+	vec3 col = out_color.xyz * (0.2 + max(dot(out_normal.xyz, light_direction.xyz),0.0)); // texture(tex, tex_transform * out_uv).abgr + out_color;
+	color = vec4(col, 1.0);
 }

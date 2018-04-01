@@ -12,8 +12,8 @@
 
 struct ResourceConfig
 {
-	const std::string resource_path = "..\\..\\resources\\";
-	const std::string shaders_path = "..\\..\\shader\\";
+	const std::string resource_path = "..\\..\\..\\resources\\";
+	const std::string shaders_path = "..\\..\\..\\shader\\";
 };
 
 dgl::Game::Game(const WindowSettings & settings) : Application(settings){}
@@ -34,7 +34,7 @@ void dgl::Game::setup()
 
 	m_cube = Actor{ glm::vec3(0.0f), scene_primitives::colored_cube(1.0f, {0.0f,0.0f,1.0f,1.0f}, {}, simple_shader) };
 	// Set the scene camera. 
-	m_cam = Camera{ glm::vec3{ 2.0f, 2.0f, 2.0f } }; // set the camera position
+	m_cam = Camera{ glm::vec3{ 0.0f, -2.0f, 2.0f } }; // set the camera position
 }
 
 // do all the stuff we need to do only once on startup + the game loop
@@ -98,6 +98,9 @@ void dgl::Game::handle_input()
 // It is also very hard for you to break things here - EXPERIMENT!
 void dgl::Game::update()
 {
+	static float r = 0.1;
+	m_cube.scene_obj.model_mat = glm::mat4(1) * glm::rotate(glm::mat4(1), r, glm::vec3{ 0,0,1 });
+	r += 0.1;
 }
 
 // the rendering function that takes care of making everything appear on screen
@@ -105,6 +108,6 @@ void dgl::Game::update()
 // remark: coordinate system origin is in the center of the screen!
 void dgl::Game::draw()
 {
-	glClear(GL_COLOR_BUFFER_BIT);	// tell openGL to clear the previous screen
-	dgl::draw(m_cube, m_cam.view_projection());
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// tell openGL to clear the previous screen
+	dgl::draw(m_cube, m_cam.view(), m_cam.projection());
 }

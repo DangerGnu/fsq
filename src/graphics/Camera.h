@@ -38,6 +38,14 @@ namespace dgl
 		GLfloat m_near;
 		GLfloat m_far;
 
+		glm::mat4 view() const {
+			return glm::lookAt(m_position, m_target, m_up);
+		}
+
+		glm::mat4 projection() const {
+			return glm::perspective(m_fov_rad, m_aspect_ratio, m_near, m_far);
+		}
+
 		glm::mat4 view_projection() const {
 			auto view = glm::lookAt(m_position, m_target, m_up);
 			auto projection = glm::perspective(m_fov_rad, m_aspect_ratio, m_near, m_far);
