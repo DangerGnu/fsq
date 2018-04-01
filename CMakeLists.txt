@@ -6,7 +6,6 @@ set(src
 	src/main.cpp
 	src/Game.cpp
 	src/Application.cpp
-	src/Map.cpp
 	src/graphics/Shader.cpp
 	src/graphics/Batch.cpp
 	src/graphics/Texture.cpp

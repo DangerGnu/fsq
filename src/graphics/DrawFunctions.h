@@ -4,7 +4,7 @@
 #include "graphics/GL_Headers.h"
 #include "graphics/Batch.h"
 #include "gamelogic/Actor.h"
-#include "Map.h"
+#include "gamelogic/Map.h"
 
 #include "glm/glm.hpp"
 #include "glm\gtc\matrix_transform.hpp"

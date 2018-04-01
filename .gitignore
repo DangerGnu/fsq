@@ -3,6 +3,7 @@
 external/*
 build/*
 resources/*
+lib/*
 
 # some common ignores
 

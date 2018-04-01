@@ -3,7 +3,6 @@
 #include "Application.h"
 #include "graphics/Camera.h"
 #include "gamelogic/Actor.h"
-#include "Map.h"
 
 #include <unordered_map>
 
@@ -22,9 +21,7 @@ private:
 	void draw();
 
 	Camera m_cam;
-	Actor m_pelican;
 	Actor m_cube;
-	Map m_level;
 
 	std::unordered_map<std::string, Shader> shader_lib;
 	std::unordered_map<std::string, Texture> texture_lib;
