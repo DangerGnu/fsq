@@ -44,7 +44,7 @@ void dgl::Game::setup()
 	m_player = Actor{ glm::vec3(0.0f), std::move(player_scene_obj) };
 	m_player.color = glm::vec3{ 0,1.0,0 };
 
-	//m_cube = Actor{ glm::vec3(0.0f), scene_primitives::colored_cube(1.0f, {0.0f,0.0f,1.0f,1.0f}, {}, color_shader) };
+	m_cube = Actor{ glm::vec3(0.0f), scene_primitives::colored_cube(1.0f, {0.0f,0.0f,1.0f,1.0f}, {}, color_shader) };
 
 	Actor obstacle = Actor{ glm::vec3(0.0f), scene_primitives::colored_cube(1.0f,{ 0.0f,0.0f,1.0f,1.0f },{}, color_shader) };
 	for (int i = 0; i < 10; ++i)
@@ -199,10 +199,9 @@ void dgl::Game::draw()
 	};
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// tell openGL to clear the previous screen
 	draw(m_player);
-	/*
+	draw(m_cube);
 	for (auto& obstacle : m_obstacles)
 	{
 		dgl::draw(obstacle, m_cam.view(), m_cam.projection());
 	}
-	*/
 }
