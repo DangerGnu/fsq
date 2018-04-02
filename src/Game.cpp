@@ -10,6 +10,7 @@
 
 // @flo start developing here :)
 
+
 struct ResourceConfig
 {
 	const std::string resource_path = "..\\..\\..\\resources\\";
@@ -23,16 +24,34 @@ void dgl::Game::setup()
 	// just some constant strings to find the resources
 	const ResourceConfig cfg;
 	// build a shader - this is a program that runs on the gpu and actually renders stuff
-	auto simple_shader = Shader::create(
+	auto color_shader = Shader::create(
 		dgl::read_text(cfg.shaders_path + "simple_in_out.vert"),
 		dgl::read_text(cfg.shaders_path + "simple_in_out.frag"));
+
+	auto texture_shader = Shader::create(
+		dgl::read_text(cfg.shaders_path + "simple_texture.vert"),
+		dgl::read_text(cfg.shaders_path + "simple_texture.frag"));
 
 	// load the background image into memory
 	//auto level_image = dgl::load_texture(cfg.resource_path + "landscape.png");
 	// ... and create a texture from it (the image is in video-ram now)
 	//auto level_texture = Texture(*level_image);
 
-	m_cube = Actor{ glm::vec3(0.0f), scene_primitives::colored_cube(1.0f, {0.0f,0.0f,1.0f,1.0f}, {}, simple_shader) };
+	auto player_geo = load_object(cfg.resource_path + "the_object.obj");
+	auto player_batch = dgl::Batch{ texture_shader, player_geo };
+	auto player_tex = dgl::Texture{ *load_texture(cfg.resource_path + "checker_tex.png") };
+	auto player_scene_obj = SceneObj{ player_tex, player_batch };
+	m_player = Actor{ glm::vec3(0.0f), std::move(player_scene_obj) };
+	m_player.color = glm::vec3{ 0,1.0,0 };
+
+	//m_cube = Actor{ glm::vec3(0.0f), scene_primitives::colored_cube(1.0f, {0.0f,0.0f,1.0f,1.0f}, {}, color_shader) };
+
+	Actor obstacle = Actor{ glm::vec3(0.0f), scene_primitives::colored_cube(1.0f,{ 0.0f,0.0f,1.0f,1.0f },{}, color_shader) };
+	for (int i = 0; i < 10; ++i)
+	{
+		m_obstacles.push_back(obstacle);
+	}
+
 	// Set the scene camera. 
 	m_cam = Camera{ glm::vec3{ 0.0f, -2.0f, 2.0f } }; // set the camera position
 }
@@ -78,14 +97,65 @@ void dgl::Game::handle_input()
 			break;
 		case SDL_MOUSEBUTTONUP:	// do nothing but you'll need this soon enough ;) 
 			break;
-		case SDL_KEYDOWN:
+		case SDL_KEYDOWN: // key pressed
+		{
 			// print the key-code and the position of the mouse when the key was pressed
-			std::cout << (int)e.key.keysym.sym << std::endl;
-			int x, y;
-			SDL_GetMouseState(&x, &y);
-			std::cout << x << " " << y << std::endl;
-		case SDL_KEYUP:
+			int key = (int)e.key.keysym.sym;
+			switch (key)
+			{
+			case 97: // a
+			{
+				m_key_state.a = true;
+				// bewege würfel nach links
+				break;
+			}
+			case 119: // w
+			{
+				m_key_state.w = true;
+				break;
+			}
+			case 115: // s
+			{
+				m_key_state.s = true;
+				break;
+			}
+			case 100: // d
+			{
+				m_key_state.d = true;
+				break;
+			}
+			}
 			break;
+		}
+		case SDL_KEYUP:
+		{
+			int key = (int)e.key.keysym.sym;
+			switch (key)
+			{
+			case 97: // a
+			{
+				m_key_state.a = false;
+				// bewege würfel nach links
+				break;
+			}
+			case 119: // w
+			{
+				m_key_state.w = false;
+				break;
+			}
+			case 115: // s
+			{
+				m_key_state.s = false;
+				break;
+			}
+			case 100: // d
+			{
+				m_key_state.d = false;
+				break;
+			}
+			}
+			break;
+		}
 		default:
 			return;
 		}
@@ -98,9 +168,25 @@ void dgl::Game::handle_input()
 // It is also very hard for you to break things here - EXPERIMENT!
 void dgl::Game::update()
 {
-	static float r = 0.1;
-	m_cube.scene_obj.model_mat = glm::mat4(1) * glm::rotate(glm::mat4(1), r, glm::vec3{ 0,0,1 });
-	r += 0.1;
+	if(m_key_state.a) 
+	{
+		m_cube.pos += glm::vec3{ -0.1, 0.0, 0.0 };
+	}
+	if(m_key_state.d)
+	{
+		m_cube.pos += glm::vec3{ 0.1, 0.0, 0.0 };
+	}
+	if (m_key_state.w)
+	{
+		m_cube.pos += glm::vec3{ 0.0, 0.1, 0.0 };
+	}
+	if (m_key_state.s)
+	{
+		m_cube.pos += glm::vec3{ 0.0, -0.1, 0.0 };
+	}
+	for (auto& obstacle : m_obstacles)
+	{
+	}
 }
 
 // the rendering function that takes care of making everything appear on screen
@@ -108,6 +194,15 @@ void dgl::Game::update()
 // remark: coordinate system origin is in the center of the screen!
 void dgl::Game::draw()
 {
+	auto draw = [this](const auto& actor) {
+		dgl::draw(actor, m_cam.view(), m_cam.projection());
+	};
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// tell openGL to clear the previous screen
-	dgl::draw(m_cube, m_cam.view(), m_cam.projection());
+	draw(m_player);
+	/*
+	for (auto& obstacle : m_obstacles)
+	{
+		dgl::draw(obstacle, m_cam.view(), m_cam.projection());
+	}
+	*/
 }

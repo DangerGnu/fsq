@@ -50,4 +50,10 @@ namespace dgl
 	{
 		glUniform1i(uniform_location, value);
 	}
+
+	template<>
+	inline void Shader::uniform(const GLuint uniform_location, const glm::vec3& value) const
+	{
+		glUniform3fv(uniform_location, 1, &value[0]);
+	}
 }

@@ -11,7 +11,7 @@ namespace dgl
 	{
 		glm::vec4 vertex;
 		glm::vec4 normal;
-		glm::vec4 color;
+		glm::vec4 color; // todo remove color? ... naw.
 		glm::vec2 uv;
 	};
 	struct Geometry

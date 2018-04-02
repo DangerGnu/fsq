@@ -14,7 +14,7 @@ namespace dgl
 			pos{ position }, scene_obj{ std::move(obj) } {}
 		
 		glm::vec3 pos = glm::vec3{ 0 };
-		
+		glm::vec3 color = glm::vec3{ 1.0, 0.0, 0.0 };
 		SceneObj scene_obj = {};
 	};
 
@@ -29,6 +29,6 @@ namespace dgl
 		//float half_space_test = glm::dot(glm::vec3{ 1.0f, 0.0f, 0.0f }, a.view);
 		//float scale = glm::sign(half_space_test);
 		//return a.scene_obj.tex_transform * glm::mat2{ scale, 0.0f, 0.0f, 1.0f };
-		return {};
+		return glm::mat2(1);
 	}
 }

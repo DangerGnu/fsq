@@ -29,6 +29,7 @@ namespace dgl
 		auto tex_mat = texture_transform(a);
 		a.scene_obj.tex.bind(GL_TEXTURE0);
 		auto& shader = a.scene_obj.batch.shader();
+		shader.uniform("overlay_color", a.color);
 		shader.uniform("m", model_matrix(a));
 		shader.uniform("v", v);
 		shader.uniform("p", p);

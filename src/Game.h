@@ -5,9 +5,18 @@
 #include "gamelogic/Actor.h"
 
 #include <unordered_map>
+#include <vector>
 
 namespace dgl 
 {
+
+struct KeyState {
+	bool w = false;
+	bool a = false;
+	bool s = false;
+	bool d = false;
+	bool z = false;
+};
 
 class Game : public Application
 {
@@ -22,7 +31,10 @@ private:
 
 	Camera m_cam;
 	Actor m_cube;
-
+	Actor m_player;
+	KeyState m_key_state;
+	std::vector<Actor> m_obstacles;
+	
 	std::unordered_map<std::string, Shader> shader_lib;
 	std::unordered_map<std::string, Texture> texture_lib;
 
