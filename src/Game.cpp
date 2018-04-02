@@ -37,12 +37,12 @@ void dgl::Game::setup()
 	// ... and create a texture from it (the image is in video-ram now)
 	//auto level_texture = Texture(*level_image);
 
-	auto player_geo = load_object(cfg.resource_path + "the_object.obj");
+	auto player_geo = load_object(cfg.resource_path + "spaceship.obj");
 	auto player_batch = dgl::Batch{ texture_shader, player_geo };
-	auto player_tex = dgl::Texture{ *load_texture(cfg.resource_path + "checker_tex.png") };
+	auto player_tex = dgl::Texture{ *load_texture(cfg.resource_path + "spaceship_tex.png") };
 	auto player_scene_obj = SceneObj{ player_tex, player_batch };
 	m_player = Actor{ glm::vec3(0.0f), std::move(player_scene_obj) };
-	m_player.color = glm::vec3{ 0,1.0,0 };
+	//m_player.color = glm::vec3{ 0,1.0,0 };
 
 	m_cube = Actor{ glm::vec3(0.0f), scene_primitives::colored_cube(1.0f, {0.0f,0.0f,1.0f,1.0f}, {}, color_shader) };
 
@@ -53,7 +53,7 @@ void dgl::Game::setup()
 	}
 
 	// Set the scene camera. 
-	m_cam = Camera{ glm::vec3{ 0.0f, -2.0f, 2.0f } }; // set the camera position
+	m_cam = Camera{ glm::vec3{ -10.0f, 20.0f, 10.0f } }; // set the camera position
 }
 
 // do all the stuff we need to do only once on startup + the game loop
@@ -184,9 +184,9 @@ void dgl::Game::update()
 	{
 		m_cube.pos += glm::vec3{ 0.0, -0.1, 0.0 };
 	}
-	for (auto& obstacle : m_obstacles)
-	{
-	}
+	static float t = 0.0f;
+	m_player.scene_obj.model_mat = glm::rotate(glm::mat4(1), t, glm::vec3{ 0,0,1 });
+	t += 0.03f;
 }
 
 // the rendering function that takes care of making everything appear on screen

@@ -23,5 +23,5 @@ void main()
     out_uv = uv;
     out_normal = vec4(transpose(inverse(mat3(m))) * normal.xyz, 0.0f);
 	out_color = color;
-	light_direction = vec4( normalize(vec3(2.0f, -2.0f, 2.0f) - (m * pos).xyz),0.0f); // light - pos;
+	light_direction = vec4( normalize(vec3(-6.0f, 12.0f, 6.0f) - (m * pos).xyz),0.0f); // light - pos;
 }

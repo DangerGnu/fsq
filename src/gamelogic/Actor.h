@@ -14,7 +14,7 @@ namespace dgl
 			pos{ position }, scene_obj{ std::move(obj) } {}
 		
 		glm::vec3 pos = glm::vec3{ 0 };
-		glm::vec3 color = glm::vec3{ 1.0, 0.0, 0.0 };
+		glm::vec3 color = glm::vec3{ 0.0, 0.0, 0.0 };
 		SceneObj scene_obj = {};
 	};
 

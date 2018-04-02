@@ -163,7 +163,7 @@ return buffer.str();
 				put_tuple(contents[3]);
 			}
 		}
-		assert(vertices.size() == normals.size()); // nope - a vertex can have multiple texture coordinates -> duplicate it then.
+		//assert(vertices.size() == normals.size()); // nope - a vertex can have multiple texture coordinates -> duplicate it then.
 		// reorder contents to line up data
 		// uvs tell the number of vertices!
 		auto aligned_vertices = std::vector<glm::vec4>{};
@@ -207,7 +207,7 @@ return buffer.str();
 				std::tie(a2, b2, c2) = el;
 				return a == a2 && b == b2 && c == c2;
 			});
-			assert(found != end(face_buffer)); // should find face in facebuffer
+			//assert(found != end(face_buffer)); // should find face in facebuffer
 			auto index = found - begin(face_buffer);
 			geo.indices.emplace_back(index);
 		}
