@@ -53,7 +53,7 @@ void dgl::Game::setup()
 	}
 
 	// Set the scene camera. 
-	m_cam = Camera{ glm::vec3{ -10.0f, 20.0f, 10.0f } }; // set the camera position
+	m_cam = Camera{ glm::vec3{ 10.0, -10.0, 10.0 } }; // set the camera position
 }
 
 // do all the stuff we need to do only once on startup + the game loop
@@ -124,6 +124,11 @@ void dgl::Game::handle_input()
 				m_key_state.d = true;
 				break;
 			}
+			case 122: // z 
+			{
+				m_key_state.z = true;
+				break;
+			}
 			}
 			break;
 		}
@@ -153,6 +158,11 @@ void dgl::Game::handle_input()
 				m_key_state.d = false;
 				break;
 			}
+			case 122: // z 
+			{
+				m_key_state.z = false;
+				break;
+			}
 			}
 			break;
 		}
@@ -168,25 +178,28 @@ void dgl::Game::handle_input()
 // It is also very hard for you to break things here - EXPERIMENT!
 void dgl::Game::update()
 {
-	if(m_key_state.a) 
+	int x = 1;
+	
+	if (m_key_state.a)
 	{
-		m_cube.pos += glm::vec3{ -0.1, 0.0, 0.0 };
+		m_player.pos += glm::vec3{ -0.2, 0.0, 0.0 };
 	}
 	if(m_key_state.d)
 	{
-		m_cube.pos += glm::vec3{ 0.1, 0.0, 0.0 };
+		m_player.pos += glm::vec3{ 0.2, 0.0, 0.0 };
 	}
 	if (m_key_state.w)
 	{
-		m_cube.pos += glm::vec3{ 0.0, 0.1, 0.0 };
+		m_player.pos += glm::vec3{ 0.0, 0.2, 0.0 };
 	}
 	if (m_key_state.s)
 	{
-		m_cube.pos += glm::vec3{ 0.0, -0.1, 0.0 };
+		m_player.pos += glm::vec3{ 0.0, -0.2, 0.0 };
 	}
-	static float t = 0.0f;
-	m_player.scene_obj.model_mat = glm::rotate(glm::mat4(1), t, glm::vec3{ 0,0,1 });
-	t += 0.03f;
+	if (m_key_state.z)
+	{
+		m_player.pos = glm::vec3{ 0.0,0.0,0.0 };
+	}
 }
 
 // the rendering function that takes care of making everything appear on screen
@@ -194,14 +207,16 @@ void dgl::Game::update()
 // remark: coordinate system origin is in the center of the screen!
 void dgl::Game::draw()
 {
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// tell openGL to clear the previous screen
 	auto draw = [this](const auto& actor) {
 		dgl::draw(actor, m_cam.view(), m_cam.projection());
 	};
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// tell openGL to clear the previous screen
 	draw(m_player);
-	draw(m_cube);
+	//draw(m_cube);
+	/*
 	for (auto& obstacle : m_obstacles)
 	{
 		dgl::draw(obstacle, m_cam.view(), m_cam.projection());
 	}
+	*/
 }

@@ -19,7 +19,7 @@ namespace dgl
 			const GLfloat fov_rad = glm::pi<GLfloat>() * 0.5f,
 			const GLfloat aspect_ratio = 800.0f / 600.0f,
 			const glm::vec3& up = glm::vec3{0.0f, 0.0f, 1.0f},
-			const GLfloat near = 0.001f,
+			const GLfloat near = 0.1f,
 			const GLfloat far = 1000.0f) :
 			m_position(position),
 			m_target(target),

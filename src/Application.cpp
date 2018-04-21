@@ -36,7 +36,7 @@ dgl::Application::Application(const WindowSettings & settings) : m_settings(sett
 		return;
 	}
 	// Set OpenGL version
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	// Create OpenGL context
@@ -58,12 +58,13 @@ dgl::Application::Application(const WindowSettings & settings) : m_settings(sett
 	{
 		std::cout << "Warning: Unable to set VSync! SDL Error: " << SDL_GetError() << std::endl;
 	}
+	std::cout << "Enabling Depth Test" << std::endl;
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LESS);
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LEQUAL);
 }
 
 dgl::Application::~Application()
