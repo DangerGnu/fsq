@@ -10,7 +10,6 @@
 
 // @flo start developing here :)
 
-
 struct ResourceConfig
 {
 	const std::string resource_path = "..\\..\\..\\resources\\";
@@ -36,7 +35,7 @@ void dgl::Game::setup()
 	//auto level_image = dgl::load_texture(cfg.resource_path + "landscape.png");
 	// ... and create a texture from it (the image is in video-ram now)
 	//auto level_texture = Texture(*level_image);
-
+	// Todo throw this into a yaml file that describes the resources of a game object
 	auto player_geo = load_object(cfg.resource_path + "spaceship.obj");
 	auto player_batch = dgl::Batch{ texture_shader, player_geo };
 	auto player_tex = dgl::Texture{ *load_texture(cfg.resource_path + "spaceship_tex.png") };
@@ -44,16 +43,19 @@ void dgl::Game::setup()
 	m_player = Actor{ glm::vec3(0.0f), std::move(player_scene_obj) };
 	//m_player.color = glm::vec3{ 0,1.0,0 };
 
-	m_cube = Actor{ glm::vec3(0.0f), scene_primitives::colored_cube(1.0f, {0.0f,0.0f,1.0f,1.0f}, {}, color_shader) };
-
 	Actor obstacle = Actor{ glm::vec3(0.0f), scene_primitives::colored_cube(1.0f,{ 0.0f,0.0f,1.0f,1.0f },{}, color_shader) };
-	for (int i = 0; i < 10; ++i)
+	const int grid_size = 10;
+	const int grid_spacing = 10;
+	for (int i = 0; i < grid_size; ++i)
 	{
-		m_obstacles.push_back(obstacle);
+		for (int j = 0; j < grid_size; ++j)
+		{
+			m_obstacles.emplace_back(glm::vec3(grid_spacing * i - grid_size*grid_spacing*0.5, grid_spacing * j - grid_size*grid_spacing*0.5, 0), scene_primitives::colored_cube(1.0f, { 1,1,1,1 }, {}, color_shader));
+		}
 	}
 
 	// Set the scene camera. 
-	m_cam = Camera{ glm::vec3{ 10.0, -10.0, 10.0 } }; // set the camera position
+	m_cam = Camera{ glm::vec3{ 0.0, -10.0, 5.0 } }; // set the camera position
 }
 
 // do all the stuff we need to do only once on startup + the game loop
@@ -178,6 +180,7 @@ void dgl::Game::handle_input()
 // It is also very hard for you to break things here - EXPERIMENT!
 void dgl::Game::update()
 {
+	static float time = 0;
 	int x = 1;
 	
 	if (m_key_state.a)
@@ -200,6 +203,8 @@ void dgl::Game::update()
 	{
 		m_player.pos = glm::vec3{ 0.0,0.0,0.0 };
 	}
+	m_cam.m_position += glm::vec3{ 0.0, 0.0, sin(time) };
+	time += 0.01;
 }
 
 // the rendering function that takes care of making everything appear on screen
@@ -212,11 +217,9 @@ void dgl::Game::draw()
 		dgl::draw(actor, m_cam.view(), m_cam.projection());
 	};
 	draw(m_player);
-	//draw(m_cube);
-	/*
-	for (auto& obstacle : m_obstacles)
+	
+	for (const auto& obstacle : m_obstacles)
 	{
 		dgl::draw(obstacle, m_cam.view(), m_cam.projection());
 	}
-	*/
 }

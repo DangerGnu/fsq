@@ -15,6 +15,6 @@ out vec4 color;
 void main()
 {
 	float factor = (0.2 + max(dot(out_normal.xyz, light_direction.xyz),0.0));
-	vec3 col = overlay_color * factor; // texture(tex, tex_transform * out_uv).abgr + out_color;
+	vec3 col = out_color.rgb * factor; // texture(tex, tex_transform * out_uv).abgr + out_color;
 	color = vec4(col, 1.0);
 }

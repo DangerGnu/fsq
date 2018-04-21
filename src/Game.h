@@ -30,7 +30,6 @@ private:
 	void draw();
 
 	Camera m_cam;
-	Actor m_cube;
 	Actor m_player;
 	KeyState m_key_state;
 	std::vector<Actor> m_obstacles;

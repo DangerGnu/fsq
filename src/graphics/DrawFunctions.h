@@ -20,7 +20,7 @@ namespace dgl
 		// unbind the vao
 		glBindVertexArray(0);
 	}
-	// setting the uniforms of the shader should not be the responsibility of the draw function.
+	// setting the uniforms of the shader should not be the responsibility of the draw function. Read into UBOs
 	inline void draw(const Actor& a, const glm::mat4& v, const glm::mat4& p)
 	{
 		auto tex_mat = texture_transform(a);
