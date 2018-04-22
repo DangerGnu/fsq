@@ -44,4 +44,21 @@ namespace dgl
 		shader.uniform("tex_transform", map.scene_obj.tex_transform);
 		draw(map.scene_obj.batch);
 	}
+
+	inline void draw_instanced(const Batch& batch, int num_instances) {
+		glBindVertexArray(batch.vao());
+		glDrawElementsInstanced(GL_TRIANGLES, batch.num(), GL_UNSIGNED_INT, (void*)0, num_instances);
+		glBindVertexArray(0);
+	}
+
+	inline void draw_instanced(const Actor& a, const glm::mat4& v, const glm::mat4& p, const glm::vec4& grid_dimensions) {
+		auto& shader = a.scene_obj.batch.shader();
+		glUseProgram(shader.handle());
+		shader.uniform("overlay_color", a.color);
+		shader.uniform("m", model_matrix(a));
+		shader.uniform("v", v);
+		shader.uniform("p", p);
+		shader.uniform("grid_dimensions", grid_dimensions);
+		draw_instanced(a.scene_obj.batch, grid_dimensions.x * grid_dimensions.y * grid_dimensions.z);
+	}
 }

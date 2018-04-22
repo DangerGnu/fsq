@@ -31,6 +31,10 @@ void dgl::Game::setup()
 		dgl::read_text(cfg.shaders_path + "simple_texture.vert"),
 		dgl::read_text(cfg.shaders_path + "simple_texture.frag"));
 
+	auto instance_shader = Shader::create(
+		dgl::read_text(cfg.shaders_path + "simple_in_out_instanced.vert"),
+		dgl::read_text(cfg.shaders_path + "simple_in_out_instanced.frag"));
+
 	// load the background image into memory
 	//auto level_image = dgl::load_texture(cfg.resource_path + "landscape.png");
 	// ... and create a texture from it (the image is in video-ram now)
@@ -43,10 +47,10 @@ void dgl::Game::setup()
 	m_player = Actor{ glm::vec3(0.0f), std::move(player_scene_obj) };
 	//m_player.color = glm::vec3{ 0,1.0,0 };
 
-	Actor obstacle = Actor{ glm::vec3(0.0f), scene_primitives::colored_cube(1.0f,{ 0.0f,0.0f,1.0f,1.0f },{}, color_shader) };
-	const int grid_size = 30;
+	m_cube = Actor{ glm::vec3(0.0f), scene_primitives::colored_cube(0.5f, {1.0f,1.0f,1.0f,1.0f}, {}, instance_shader) };
+	const int grid_size = 100;
 	const int grid_spacing = 10;
-	m_grid = Actor{ glm::vec3(0.0f), scene_primitives::cube_grid(0.5, grid_size, grid_size, grid_size, grid_spacing, color_shader) };
+	//m_grid = Actor{ glm::vec3(0.0f), scene_primitives::cube_grid(0.5, grid_size, grid_size, grid_size, grid_spacing, color_shader) };
 
 	// Set the scene camera. 
 	m_cam = Camera{ glm::vec3{ 0.0, -10.0, 5.0 } }; // set the camera position
@@ -227,7 +231,7 @@ void dgl::Game::update()
 	}
 	if (m_key_state.s)
 	{
-		m_player.pos += glm::vec3(m_player.orientation * glm::vec4{ 0.0, linear_speed, 0.0, 0.0 });
+		m_player.pos += glm::vec3(m_player.orientation * glm::vec4{ 0.0, -linear_speed, 0.0, 0.0 });
 	}
 	if (m_key_state.z)
 	{
@@ -263,6 +267,8 @@ void dgl::Game::draw()
 	auto draw = [this](const auto& actor) {
 		dgl::draw(actor, m_cam.view(), m_cam.projection());
 	};
+	//draw(m_cube);
 	draw(m_player);
-	draw(m_grid);
+	//draw(m_grid);
+	draw_instanced(m_cube, m_cam.view(), m_cam.projection(), glm::vec4(20, 20, 20, 10));
 }

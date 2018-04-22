@@ -42,6 +42,8 @@ private:
 	Camera m_cam;
 	Actor m_player;
 	Actor m_grid;
+	Actor m_cube;
+	glm::vec4 m_cube_grid_dimensions;
 	KeyState m_key_state;
 	MouseState m_mouse_state;
 
