@@ -11,6 +11,7 @@ namespace dgl
 		Batch() {}
 		Batch(Shader shader) : m_shader(shader) {}
 		Batch(Shader shader, const Geometry& geometry); // caller still holds geometry
+		// todo write destructor
 		Shader shader() const { return m_shader; }
 		GLuint vao() const { return m_vao; }
 		GLuint num() const { return m_num; } 

@@ -14,14 +14,23 @@ namespace dgl
 			pos{ position }, scene_obj{ std::move(obj) } {}
 		
 		glm::vec3 pos = glm::vec3{ 0 };
+		glm::vec3 velocity = glm::vec3{ 0 };
+		glm::quat orientation = glm::quat{ 1,0,0,0 };
 		glm::vec3 color = glm::vec3{ 0.0, 0.0, 0.0 };
 		SceneObj scene_obj = {};
 	};
+
+	inline glm::mat4 rotation_matrix(const Actor& a)
+	{
+
+	}
+
 	// just use the model mat of the scene obj
 	inline glm::mat4 model_matrix(const Actor& a)
 	{
+
 		//glm::mat4 orientation = glm::toMat4(dgl::rotation_between_vectors_2d(glm::vec3(1.0f, 0.0f, 0.0f), a.view));
-		return glm::translate(glm::mat4{ 1.0f }, a.pos) * a.scene_obj.model_mat;
+		return glm::translate(glm::mat4{ 1.0f }, a.pos) * glm::toMat4(a.orientation) * a.scene_obj.model_mat;
 	}
 	inline glm::mat2 texture_transform(const Actor& a)
 	{

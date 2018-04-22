@@ -5,7 +5,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/constants.hpp>
-
+#include <glm/gtx/quaternion.hpp>
+#include <iostream>
 
 namespace dgl
 {
@@ -29,7 +30,7 @@ namespace dgl
 			m_near(near),
 			m_far(far)
 		{}
-		
+		glm::quat m_orientation = glm::quat{ 1,0,0,0 };
 		glm::vec3 m_position;
 		glm::vec3 m_target;
 		GLfloat m_fov_rad;
@@ -39,7 +40,8 @@ namespace dgl
 		GLfloat m_far;
 
 		glm::mat4 view() const {
-			return glm::lookAt(m_position, m_target, m_up);
+			auto up = glm::vec3(m_orientation * glm::vec4(0, 0, 1, 0));
+			return glm::lookAt(m_position, m_target, up);
 		}
 
 		glm::mat4 projection() const {

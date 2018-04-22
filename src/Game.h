@@ -3,6 +3,7 @@
 #include "Application.h"
 #include "graphics/Camera.h"
 #include "gamelogic/Actor.h"
+#include "gamelogic/GameTime.h"
 
 #include <unordered_map>
 #include <vector>
@@ -16,6 +17,14 @@ struct KeyState {
 	bool s = false;
 	bool d = false;
 	bool z = false;
+	bool esc = false;
+};
+
+struct MouseState {
+	int x = 0;
+	int y = 0;
+	bool left_click = false;
+	bool right_click = false;
 };
 
 class Game : public Application
@@ -31,11 +40,15 @@ private:
 
 	Camera m_cam;
 	Actor m_player;
+	Actor m_grid;
 	KeyState m_key_state;
-	std::vector<Actor> m_obstacles;
+	MouseState m_mouse_state;
+
 	
 	std::unordered_map<std::string, Shader> shader_lib;
 	std::unordered_map<std::string, Texture> texture_lib;
+
+	Time m_game_time;
 
 	bool m_close = false;
 };
