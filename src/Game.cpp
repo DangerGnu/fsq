@@ -98,6 +98,7 @@ void dgl::Game::handle_input()
 		{
 			// print the key-code and the position of the mouse when the key was pressed
 			int key = (int)e.key.keysym.sym;
+			std::cout << key << std::endl;
 			switch (key)
 			{
 			case 97: // a
@@ -129,6 +130,11 @@ void dgl::Game::handle_input()
 			case 27: // esc
 			{
 				m_key_state.esc = true;
+				break;
+			}
+			case 1073742049: 
+			{
+				m_key_state.shift = true;
 				break;
 			}
 			}
@@ -170,6 +176,11 @@ void dgl::Game::handle_input()
 				m_key_state.esc = false;
 				break;
 			}
+			case 1073742049: {
+				m_key_state.shift = false;
+				break;
+			}
+
 			}
 			break;
 		}
@@ -198,9 +209,10 @@ void dgl::Game::update()
 {
 	m_game_time.tick();
 	auto elapsed_time = m_game_time.elapsed();
-	std::cout << elapsed_time << std::endl;
+	//std::cout << elapsed_time << std::endl;
 	const double speed = elapsed_time * 0.004; // speed depends on the time since the last frame
 	const double roll_speed = elapsed_time * 2;
+	const double linear_speed = 0.5 + m_key_state.shift * 1.0;
 	if (m_key_state.a)
 	{
 		m_cam.m_orientation = m_cam.m_orientation * glm::rotate<float>(glm::quat{ 1,0,0,0 }, -roll_speed, glm::vec3{ 0,1,0 });
@@ -211,11 +223,11 @@ void dgl::Game::update()
 	}
 	if (m_key_state.w)
 	{
-		m_player.pos += glm::vec3(m_player.orientation * glm::vec4{ 0.0, 0.2, 0.0, 0.0 });
+		m_player.pos += glm::vec3(m_player.orientation * glm::vec4{ 0.0, linear_speed, 0.0, 0.0 });
 	}
 	if (m_key_state.s)
 	{
-		m_player.pos += glm::vec3(m_player.orientation * glm::vec4{ 0.0, -0.2, 0.0, 0.0 });
+		m_player.pos += glm::vec3(m_player.orientation * glm::vec4{ 0.0, linear_speed, 0.0, 0.0 });
 	}
 	if (m_key_state.z)
 	{

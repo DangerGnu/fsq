@@ -17,6 +17,7 @@ struct KeyState {
 	bool s = false;
 	bool d = false;
 	bool z = false;
+	bool shift = false;
 	bool esc = false;
 };
 
